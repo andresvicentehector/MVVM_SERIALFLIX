@@ -8,12 +8,12 @@ I've used Provider instead and implemented an offline version with an non SQL da
 I have also integrate multilanguage support for the flutter app how to implemwnt this in flutter.
 
 <div align="left">
-    <img src="" width="400px"</img> 
+    <img src="https://github.com/andresvicentehector/MVVM_SERIALFLIX/blob/develop/screenshot/Screenshot_1.jpeg" width="400px"</img> 
 </div>
 
 
 <div align="right">
-    <img src="" width="400px"</img> 
+    <img src="https://github.com/andresvicentehector/MVVM_SERIALFLIX/blob/develop/screenshot/Screenshot_2.jpeg" width="400px"</img> 
 </div>
 
 
