@@ -42,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Consumer<MoviesListVM>(builder: (context, viewModel, _) {
         switch (viewModel.movieMain.status) {
           case Status.LOADING:
-            //print("ESTADO::LOADING");
+            print("ESTADO::LOADING");
             return LoadingWidget();
           case Status.ERROR:
-            //print("ESTADO :: ERROR LOADING");
+            print("ESTADO :: ERROR LOADING");
             return MyErrorWidget(viewModel.movieMain.message ?? "NA");
           case Status.COMPLETED:
             //print("ESTADO :: COMPLETED");

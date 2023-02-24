@@ -11,7 +11,7 @@ initializer() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //IMPORTANT TO IPAD::::::Should you decide to opt out of multitasking you can do this by setting "Requires full screen" to true in the Xcode Deployment Info.
-  //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Hive.initFlutter();
   Hive.registerAdapter(MovieHiveAdapter());
   Hive.registerAdapter(ResultsHiveAdapter());

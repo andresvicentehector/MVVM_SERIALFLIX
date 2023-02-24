@@ -9,9 +9,15 @@ class LoadingWidget extends StatelessWidget {
       child: Center(
           child: Stack(
         children: [
-          CircularProgressIndicator(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(
+                strokeWidth:
+                    4.0 // increase this value to make the indicator bigger
+                ),
+          ),
           SizedBox(
-            height: 48,
+            height: 80,
             child: Image.asset("assets/images/s.png"),
           ),
         ],
