@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: IconButton(
               onPressed: () async {
                 if (int.parse(page) < viewModel.movieMain.data?.totalPages) {
-                  page = (int.parse(page) + 1).toString();
+                  page = (int.parse(page) + 2).toString();
                   viewModel.fetchMovies(lang, page);
                 }
               },
