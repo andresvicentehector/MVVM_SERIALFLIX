@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:Hector_Show_movie/models/moviesList/online/MoviesMain.dart';
 import 'package:Hector_Show_movie/models/moviesList/offline/moviesHive.dart';
@@ -28,8 +27,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-        child: MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.light(
@@ -57,6 +55,6 @@ class MyApp extends StatelessWidget {
         MovieDetailsScreen.id: (context) => MovieDetailsScreen(
             ModalRoute.of(context)!.settings.arguments as Results),
       },
-    ));
+    );
   }
 }

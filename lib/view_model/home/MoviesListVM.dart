@@ -1,5 +1,4 @@
 //import 'package:Hector_Show_data/remote/network/ApiEndPoints.dart';
-import 'package:Hector_Show_movie/utils/lang&page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:Hector_Show_movie/data/remote/response/ApiResponse.dart';
@@ -21,19 +20,20 @@ class MoviesListVM extends ChangeNotifier {
 
 //el parametro de entrada es la clase api response que coje la clase movie como parametro de entrada y devuelve una respuesta
   void _setMovieMain(ApiResponse<Movie> response) {
-    print("Response :: $response");
+    //print("Response :: $response");
     movieMain = response;
     notifyListeners();
   }
 
   /*void _setMovieMainHive(HiveResponse<MovieHive> response) {
-    print(" :: $response");
+    //print(" :: $response");
     movieMainhive = response;
     notifyListeners();
   } */
 
 //the only way to access to movie list from the ui
   Future<void> fetchMovies(String lang, String page) async {
+    print("lang " + lang + " Page" + page);
     if (await InternetConnectionChecker().hasConnection) {
       _setMovieMain(ApiResponse.loading());
 

@@ -11,7 +11,7 @@ class NetworkApiService extends BaseApiService {
     try {
       final response = await http.get(
           Uri.parse(baseUrl + "language=" + lang + "&page=" + page)); //+ url
-      print("la URL TOLI :$baseUrl"); //+ url
+      //print("la URL TOLI :$baseUrl"); //+ url
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');

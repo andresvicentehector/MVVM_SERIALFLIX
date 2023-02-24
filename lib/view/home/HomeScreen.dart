@@ -1,4 +1,3 @@
-import 'package:Hector_Show_movie/utils/lang&page.dart';
 import 'package:flutter/material.dart';
 import 'package:Hector_Show_movie/data/remote/response/Status.dart';
 import 'package:Hector_Show_movie/res/AppContextExtension.dart';
@@ -29,42 +28,44 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controllerSideBar =
       SidebarXController(selectedIndex: 1, extended: true);
   String flagUrl = "assets/images/flags/usa.png";
+  String page = "1";
+  String lang = "en-US";
 
   @override
   void initState() {
-    viewModel.fetchMovies("EN-us", "1");
+    viewModel.fetchMovies(page, lang);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _key,
-      drawer: SideBarX(
-        controller: _controllerSideBar,
-        function: _changelang,
-      ),
-      appBar: _appBarBuilder(),
-      body: ChangeNotifierProvider<MoviesListVM>(
-        create: (BuildContext context) => viewModel,
-        child: Consumer<MoviesListVM>(builder: (context, viewModel, _) {
-          switch (viewModel.movieMain.status) {
-            case Status.LOADING:
-              print("ESTADO::LOADING");
-              return LoadingWidget();
-            case Status.ERROR:
-              print("ESTADO :: ERROR LOADING");
-              return MyErrorWidget(viewModel.movieMain.message ?? "NA");
-            case Status.COMPLETED:
-              print("ESTADO :: COMPLETED");
-              return getMoviesGridView(
-                  viewModel.movieMain.data?.results, context);
-            default:
-          }
-          return SizedBox.shrink();
-        }),
-      ),
-      floatingActionButton: _actionButton(),
+    return ChangeNotifierProvider<MoviesListVM>(
+      create: (BuildContext context) => viewModel,
+      child: Consumer<MoviesListVM>(builder: (context, viewModel, _) {
+        switch (viewModel.movieMain.status) {
+          case Status.LOADING:
+            //print("ESTADO::LOADING");
+            return LoadingWidget();
+          case Status.ERROR:
+            //print("ESTADO :: ERROR LOADING");
+            return MyErrorWidget(viewModel.movieMain.message ?? "NA");
+          case Status.COMPLETED:
+            //print("ESTADO :: COMPLETED");
+            return Scaffold(
+              key: _key,
+              drawer: SideBarX(
+                  controller: _controllerSideBar,
+                  function: _changelang,
+                  page: page),
+              appBar: _appBarBuilder(),
+              body: HomeScreenGridView(
+                  moviesList: viewModel.movieMain.data?.results),
+              floatingActionButton: _actionButton(),
+            );
+          default:
+        }
+        return SizedBox.shrink();
+      }),
     );
   }
 
@@ -98,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: IconButton(
               onPressed: () async {
                 if (int.parse(page) > 1) {
-                  print("after" + page);
+                  //print("after" + page);
                   await viewModel.updatePage(page);
-                  print("Before " + page);
+                  //print("Before " + page);
                   viewModel.fetchMovies(lang, page);
                 }
               },
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: IconButton(
               onPressed: () async {
                 if (int.parse(page) < viewModel.movieMain.data?.totalPages) {
-                  page = (int.parse(page) + 2).toString();
+                  page = (int.parse(page) + 1).toString();
                   viewModel.fetchMovies(lang, page);
                 }
               },
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _changelang(lang) {
+  void _changelang(lang, page) {
     if (lang == "en-US") {
       flagUrl = "assets/images/flags/usa.png";
     } else {

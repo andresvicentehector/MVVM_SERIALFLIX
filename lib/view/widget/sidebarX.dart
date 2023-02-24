@@ -7,11 +7,13 @@ import 'package:sidebarx/sidebarx.dart';
 class SideBarX extends StatelessWidget {
   final SidebarXController _controllerSideBar;
   final Function function;
+  final String page;
 
   SideBarX(
       {Key? key,
       required SidebarXController controller,
-      required this.function})
+      required this.function,
+      required this.page})
       : _controllerSideBar = controller;
 
   late var width = 100.0;
@@ -87,14 +89,14 @@ class SideBarX extends StatelessWidget {
             label: 'English',
             onTap: () {
               flagUrl = "assets/images/flags/usa.png";
-              function("en-US");
+              function("en-US", page);
             }),
         SidebarXItem(
             iconWidget: icono(flagUrlSpain),
             label: 'Spanish',
             onTap: () {
               flagUrl = "assets/images/flags/spain.png";
-              function("es-ES");
+              function("es-ES", page);
             }),
       ],
     );

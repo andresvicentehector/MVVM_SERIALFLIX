@@ -8,16 +8,22 @@ import '../details/MovieDetailsScreen.dart';
 import '../widget/MyTextViewSubtittle.dart';
 import '../widget/MyTextViewTittle.dart';
 
-Widget getMoviesGridView(List<Results>? moviesList, BuildContext context) {
-  return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      padding: EdgeInsets.zero,
-      itemCount: moviesList?.length,
-      itemBuilder: (context, position) {
-        return _getMovieGridViewBuilder(moviesList?[position], context);
-      });
+class HomeScreenGridView extends StatelessWidget {
+  final List<Results>? moviesList;
+  const HomeScreenGridView({this.moviesList});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        padding: EdgeInsets.zero,
+        itemCount: moviesList?.length,
+        itemBuilder: (context, position) {
+          return _getMovieGridViewBuilder(moviesList?[position], context);
+        });
+  }
 }
 
 Widget _getMovieGridViewBuilder(Results? item, BuildContext context) {
@@ -39,7 +45,7 @@ Widget getMoviesListView(List<Results>? moviesList, BuildContext context) {
       itemCount: moviesList?.length,
       itemBuilder: (context, position) {
         //return _getMovieListItem(moviesList?[position].results);
-        print(moviesList.toString());
+        //print(moviesList.toString());
         return _getMovieListItem(moviesList?[position], context);
       });
 }

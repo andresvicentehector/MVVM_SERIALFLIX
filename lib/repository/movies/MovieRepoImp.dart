@@ -21,15 +21,14 @@ class MovieRepoImp implements MovieRepo {
         // ApiEndPoints().getMoviesLang,
         //ApiEndPoints().getMoviesPage,
       );
-      print(
-          "Json from API: $response"); //ese response es un JSON Que ha pillado de la API
+      //print("Json from API: $response"); //ese response es un JSON Que ha pillado de la API
 
       final jsonData = Movie.fromJson(response);
       final jsonDataHive = MovieHive.fromJson(response);
 
       await box.put(jsonData.page, jsonDataHive.results);
-      print("valores del box:" + box.keys.toString());
-      print("BOXSAVED");
+      //print("valores del box:" + box.keys.toString());
+      //print("BOXSAVED");
 
       return jsonData;
     } catch (e) {
