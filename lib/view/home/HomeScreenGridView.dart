@@ -89,27 +89,6 @@ Widget _getMovieListItem(Results? item, BuildContext context) {
   );
 }
 
-Widget languageSelectorOpener(final _key, String flagUrl) {
-  return GestureDetector(
-    child: Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey),
-        image: DecorationImage(
-          image: AssetImage(flagUrl),
-          fit: BoxFit.cover,
-        ),
-      ),
-      width: 30,
-      padding: EdgeInsets.all(30),
-    ),
-    onTap: () {
-      _key.currentState?.openDrawer();
-    },
-    onDoubleTap: () {},
-  );
-}
-
 void _sendDataToMovieDetailScreen(BuildContext context, Results? item) {
   Navigator.pushNamed(context, MovieDetailsScreen.id, arguments: item);
 }

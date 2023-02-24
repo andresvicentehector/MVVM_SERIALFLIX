@@ -13,7 +13,8 @@ import '../widget/LoadingWidget.dart';
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widget/sidebarX.dart';
-import 'HomeScreenWidgets.dart';
+import 'HomeScreenActionButton.dart';
+import 'HomeScreenGridView.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String id = "home_screen";
@@ -27,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _key = GlobalKey<ScaffoldState>();
   final _controllerSideBar =
       SidebarXController(selectedIndex: 1, extended: true);
-  String flagUrl = "assets/images/flags/usa.png";
 
   @override
   void initState() {
@@ -53,12 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
               key: _key,
               drawer: SideBarX(
                   controller: _controllerSideBar,
-                  function: _changelang,
+                  function: viewModel.changeLang,
                   page: viewModel.page),
               appBar: _appBarBuilder(),
               body: HomeScreenGridView(
                   moviesList: viewModel.movieMain.data?.results),
-              floatingActionButton: _actionButton(),
+              floatingActionButton: ActionButton(
+                lang: viewModel.lang,
+                page: viewModel.page,
+                moviesPages: viewModel.movieMain.data?.totalPages,
+                updatePageDown: viewModel.updatePageDown,
+                updatePageUp: viewModel.updatePageUp,
+              ),
             );
           default:
         }
@@ -79,69 +85,29 @@ class _HomeScreenState extends State<HomeScreen> {
         // SizedBox(height: 50, width: 40, child: languageSelector(_langController))
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: languageSelectorOpener(_key, flagUrl),
+          child: languageSelectorOpener(_key, viewModel.flagUrl),
         )
       ],
     );
   }
 
-  Widget _actionButton() {
-    return ButtonBar(
-      children: [
-        Container(
-          width: 50,
-          decoration: ShapeDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: CircleBorder(),
+  Widget languageSelectorOpener(final _key, String flagUrl) {
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey),
+          image: DecorationImage(
+            image: AssetImage(flagUrl),
+            fit: BoxFit.cover,
           ),
-          child: IconButton(
-              onPressed: () async {
-                if (int.parse(viewModel.page) > 1) {
-                  //print("after" + page);
-                  await viewModel.updatePageDown(
-                    viewModel.page,
-                  );
-                  viewModel.fetchMovies(viewModel.lang, viewModel.page);
-                  //print("Before " + page);
-                  //viewModel.fetchMovies(lang, page);
-                }
-              },
-              icon: Icon(Icons.arrow_upward),
-              color: Theme.of(context).colorScheme.secondary),
         ),
-        Container(
-          width: 50,
-          decoration: ShapeDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-              onPressed: () async {
-                if (int.parse(viewModel.page) <
-                    viewModel.movieMain.data?.totalPages) {
-                  await viewModel.updatePageUp(
-                    viewModel.page,
-                  );
-                  viewModel.fetchMovies(
-                    viewModel.lang,
-                    viewModel.page,
-                  );
-                }
-              },
-              icon: Icon(Icons.arrow_downward),
-              color: Theme.of(context).colorScheme.secondary),
-        ),
-      ],
+        width: 30,
+        padding: EdgeInsets.all(30),
+      ),
+      onTap: () {
+        _key.currentState?.openDrawer();
+      },
     );
-  }
-
-  void _changelang(lang) {
-    if (lang == "en-US") {
-      flagUrl = "assets/images/flags/usa.png";
-    } else {
-      flagUrl = "assets/images/flags/spain.png";
-    }
-    viewModel.lang = lang;
-    viewModel.fetchMovies(lang, viewModel.page);
   }
 }
