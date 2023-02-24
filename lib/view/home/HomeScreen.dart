@@ -28,12 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controllerSideBar =
       SidebarXController(selectedIndex: 1, extended: true);
   String flagUrl = "assets/images/flags/usa.png";
-  String page = "1";
-  String lang = "en-US";
 
   @override
   void initState() {
-    viewModel.fetchMovies(page, lang);
+    viewModel.fetchMovies(viewModel.page, viewModel.lang);
     super.initState();
   }
 
@@ -56,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               drawer: SideBarX(
                   controller: _controllerSideBar,
                   function: _changelang,
-                  page: page),
+                  page: viewModel.page),
               appBar: _appBarBuilder(),
               body: HomeScreenGridView(
                   moviesList: viewModel.movieMain.data?.results),
@@ -98,11 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: IconButton(
               onPressed: () async {
-                if (int.parse(page) > 1) {
+                if (int.parse(viewModel.page) > 1) {
                   //print("after" + page);
-                  await viewModel.updatePage(page);
+                  await viewModel.updatePageDown(
+                    viewModel.page,
+                  );
+                  viewModel.fetchMovies(viewModel.lang, viewModel.page);
                   //print("Before " + page);
-                  viewModel.fetchMovies(lang, page);
+                  //viewModel.fetchMovies(lang, page);
                 }
               },
               icon: Icon(Icons.arrow_upward),
@@ -116,9 +117,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: IconButton(
               onPressed: () async {
-                if (int.parse(page) < viewModel.movieMain.data?.totalPages) {
-                  page = (int.parse(page) + 1).toString();
-                  viewModel.fetchMovies(lang, page);
+                if (int.parse(viewModel.page) <
+                    viewModel.movieMain.data?.totalPages) {
+                  await viewModel.updatePageUp(
+                    viewModel.page,
+                  );
+                  viewModel.fetchMovies(
+                    viewModel.lang,
+                    viewModel.page,
+                  );
                 }
               },
               icon: Icon(Icons.arrow_downward),
@@ -128,13 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _changelang(lang, page) {
+  void _changelang(lang) {
     if (lang == "en-US") {
       flagUrl = "assets/images/flags/usa.png";
     } else {
       flagUrl = "assets/images/flags/spain.png";
     }
-
-    viewModel.fetchMovies(lang, page);
+    viewModel.lang = lang;
+    viewModel.fetchMovies(lang, viewModel.page);
   }
 }

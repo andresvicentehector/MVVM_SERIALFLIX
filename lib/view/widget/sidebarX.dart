@@ -89,14 +89,14 @@ class SideBarX extends StatelessWidget {
             label: 'English',
             onTap: () {
               flagUrl = "assets/images/flags/usa.png";
-              function("en-US", page);
+              function("en-US");
             }),
         SidebarXItem(
             iconWidget: icono(flagUrlSpain),
             label: 'Spanish',
             onTap: () {
               flagUrl = "assets/images/flags/spain.png";
-              function("es-ES", page);
+              function("es-ES");
             }),
       ],
     );

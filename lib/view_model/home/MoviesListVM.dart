@@ -17,6 +17,8 @@ class MoviesListVM extends ChangeNotifier {
 
   ApiResponse<Movie> movieMain = ApiResponse.loading();
   // late List<Results>? movieMainHive;
+  String page = "1";
+  String lang = "en-US";
 
 //el parametro de entrada es la clase api response que coje la clase movie como parametro de entrada y devuelve una respuesta
   void _setMovieMain(ApiResponse<Movie> response) {
@@ -47,8 +49,17 @@ class MoviesListVM extends ChangeNotifier {
     }
   }
 
-  Future<void> updatePage(String page) async {
+  Future<void> updatePageDown(
+    String page1,
+  ) async {
     page = (int.parse(page) - 1).toString();
+    notifyListeners();
+  }
+
+  Future<void> updatePageUp(
+    String page1,
+  ) async {
+    page = (int.parse(page) + 1).toString();
     notifyListeners();
   }
 
