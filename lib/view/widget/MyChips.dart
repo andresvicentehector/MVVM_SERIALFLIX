@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyChips extends StatelessWidget {
   final label;
   final Color color;
-  MyChips(this.label,this.color);
+  MyChips(this.label, this.color);
   @override
   Widget build(BuildContext context) {
     return Chip(

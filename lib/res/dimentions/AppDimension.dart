@@ -1,6 +1,6 @@
-import 'package:project/res/dimentions/Dimensions.dart';
+import 'package:Hector_Show_movie/res/dimentions/Dimensions.dart';
 
-class AppDimension extends Dimensions{
+class AppDimension extends Dimensions {
   @override
   double get bigMargin => 20;
 
@@ -26,7 +26,7 @@ class AppDimension extends Dimensions{
   double get lightElevation => 4;
 
   @override
-  double get bigText => 22;
+  double get bigText => 28;
 
   @override
   double get defaultText => 18;
@@ -48,5 +48,4 @@ class AppDimension extends Dimensions{
 
   @override
   double get imageHeight => 450;
-  
 }

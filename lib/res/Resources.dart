@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:project/res/colors/AppColors.dart';
-import 'package:project/res/dimentions/AppDimension.dart';
-import 'package:project/res/strings/FrenchStrings.dart';
-import 'package:project/res/strings/Strings.dart';
+import 'package:Hector_Show_movie/res/colors/AppColors.dart';
+import 'package:Hector_Show_movie/res/colors/AppColors_dark.dart';
+
+import 'package:Hector_Show_movie/res/dimentions/AppDimension.dart';
+import 'package:Hector_Show_movie/res/strings/SpanishStrings.dart';
+import 'package:Hector_Show_movie/res/strings/Strings.dart';
 
 import 'strings/EnglishStrings.dart';
 
@@ -15,8 +17,8 @@ class Resources {
     // It could be from the user preferences or even from the current locale
     Locale locale = Localizations.localeOf(_context);
     switch (locale.languageCode) {
-      case 'fr':
-        return FrenchStrings();
+      case 'es':
+        return SpanishStrings();
       default:
         return EnglishStrings();
     }
@@ -26,6 +28,10 @@ class Resources {
     return AppColors();
   }
 
+  AppColorsDark get colorDark {
+    return AppColorsDark();
+  }
+
   AppDimension get dimension {
     return AppDimension();
   }
@@ -33,6 +39,4 @@ class Resources {
   static Resources of(BuildContext context) {
     return Resources(context);
   }
-
-  
 }

@@ -4,6 +4,9 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+
+        
         {
             "name": "flutter_mvvm-master",
             "request": "launch",
@@ -20,6 +23,14 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "flutter_mvvm-master (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug"
         }
+
+    
     ]
 }

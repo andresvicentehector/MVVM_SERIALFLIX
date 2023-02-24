@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:project/data/remote/AppException.dart';
-import 'package:project/data/remote/network/BaseApiService.dart';
+import 'package:Hector_Show_movie/data/remote/AppException.dart';
+import 'package:Hector_Show_movie/data/remote/network/BaseApiService.dart';
 
 class NetworkApiService extends BaseApiService {
   @override
-  Future getResponse(String url) async {
+  Future getResponse(String lang, String page) async {
     dynamic responseJson;
     try {
-      final response = await http.get(Uri.parse(baseUrl + url)); //+ url
-      print("la URL TOLI :${baseUrl}"); //+ url
+      final response = await http.get(
+          Uri.parse(baseUrl + "language=" + lang + "&page=" + page)); //+ url
+      print("la URL TOLI :$baseUrl"); //+ url
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');

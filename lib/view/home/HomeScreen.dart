@@ -1,17 +1,20 @@
+import 'package:Hector_Show_movie/utils/lang&page.dart';
 import 'package:flutter/material.dart';
-import 'package:project/data/remote/response/Status.dart';
-import 'package:project/models/moviesList/MoviesMain.dart';
-import 'package:project/res/AppContextExtension.dart';
-import 'package:project/utils/Utils.dart';
-import 'package:project/view/details/MovieDetailsScreen.dart';
-import 'package:project/view/widget/MyTextView.dart';
-import 'package:project/view_model/home/MoviesListVM.dart';
+import 'package:Hector_Show_movie/data/remote/response/Status.dart';
+import 'package:Hector_Show_movie/res/AppContextExtension.dart';
+import 'package:Hector_Show_movie/view/widget/MyTextViewSubtittle.dart';
+import 'package:Hector_Show_movie/view/widget/MyTextViewTittle.dart';
+import 'package:Hector_Show_movie/view_model/home/MoviesListVM.dart';
 import 'package:provider/provider.dart';
+import 'package:sidebarx/sidebarx.dart';
+import '../../data/remote/network/ApiEndPoints.dart';
 import '../widget/MyErrorWidget.dart';
 import '../widget/LoadingWidget.dart';
 
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
+
+import '../widget/sidebarX.dart';
+import 'HomeScreenWidgets.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String id = "home_screen";
@@ -22,102 +25,115 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final MoviesListVM viewModel = MoviesListVM();
+  final _key = GlobalKey<ScaffoldState>();
+  final _controllerSideBar =
+      SidebarXController(selectedIndex: 1, extended: true);
+  String flagUrl = "assets/images/flags/usa.png";
 
   @override
   void initState() {
-    viewModel.fetchMovies();
+    viewModel.fetchMovies("EN-us", "1");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-            child: MyTextView(
-                context.resources.strings.homeScreen,
-                context.resources.color.colorWhite,
-                context.resources.dimension.bigText)),
-        backgroundColor: Theme.of(context).primaryColor,
+      key: _key,
+      drawer: SideBarX(
+        controller: _controllerSideBar,
+        function: _changelang,
       ),
+      appBar: _appBarBuilder(),
       body: ChangeNotifierProvider<MoviesListVM>(
         create: (BuildContext context) => viewModel,
         child: Consumer<MoviesListVM>(builder: (context, viewModel, _) {
           switch (viewModel.movieMain.status) {
             case Status.LOADING:
-              print("MARAJ :: LOADING");
+              print("ESTADO::LOADING");
               return LoadingWidget();
             case Status.ERROR:
-              print("MARAJ :: ERROR");
+              print("ESTADO :: ERROR LOADING");
               return MyErrorWidget(viewModel.movieMain.message ?? "NA");
             case Status.COMPLETED:
-              print("MARAJ :: COMPLETED");
-              return _getMoviesListView(viewModel.movieMain.data?.results);
+              print("ESTADO :: COMPLETED");
+              return getMoviesGridView(
+                  viewModel.movieMain.data?.results, context);
             default:
           }
-          return Container();
+          return SizedBox.shrink();
         }),
       ),
+      floatingActionButton: _actionButton(),
     );
   }
 
-  Widget _getMoviesListView(List<Results>? moviesList) {
-    return ListView.builder(
-        itemCount: moviesList?.length,
-        itemBuilder: (context, position) {
-          //return _getMovieListItem(moviesList?[position].results);
-          print(moviesList.toString());
-          return _getMovieListItem(moviesList?[position]);
-        });
+  PreferredSizeWidget _appBarBuilder() {
+    return AppBar(
+      title: Center(
+          child: MyTextViewTittle(
+        context.resources.strings.homeScreen,
+      )),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      leading: SizedBox.shrink(),
+      actions: [
+        // SizedBox(height: 50, width: 40, child: languageSelector(_langController))
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: languageSelectorOpener(_key, flagUrl),
+        )
+      ],
+    );
   }
 
-  Widget _getMovieListItem(Results? item) {
-    String? imageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
-    return Card(
-      child: ListTile(
-        leading: ClipRRect(
-          child: Image.network(
-            imageUrl + (item?.posterPath ?? ""),
-            errorBuilder: (context, error, stackTrace) {
-              return new Image.asset('assets/images/img_error.png');
-            },
-            fit: BoxFit.fill,
-            width: context.resources.dimension.listImageSize,
-            height: context.resources.dimension.listImageSize,
+  Widget _actionButton() {
+    return ButtonBar(
+      children: [
+        Container(
+          width: 50,
+          decoration: ShapeDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            shape: CircleBorder(),
           ),
-          borderRadius: BorderRadius.circular(
-              context.resources.dimension.imageBorderRadius),
+          child: IconButton(
+              onPressed: () async {
+                if (int.parse(page) > 1) {
+                  print("after" + page);
+                  await viewModel.updatePage(page);
+                  print("Before " + page);
+                  viewModel.fetchMovies(lang, page);
+                }
+              },
+              icon: Icon(Icons.arrow_upward),
+              color: Theme.of(context).colorScheme.secondary),
         ),
-        title: MyTextView(
-            item?.name ?? "NA",
-            context.resources.color.colorPrimaryText,
-            context.resources.dimension.bigText),
-        subtitle: MyTextView(
-            item?.originalLanguage ?? "NA",
-            context.resources.color.colorSecondaryText,
-            context.resources.dimension.mediumText),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //MyTextView("${Utils.setAverageRating(item.ratings ?? [])}",context.resources.color.colorBlack,context.resources.dimension.mediumText),
-            SizedBox(
-              width: context.resources.dimension.verySmallMargin,
-            ),
-            Icon(
-              Icons.star,
-              color: context.resources.color.colorAccent,
-            ),
-          ],
+        Container(
+          width: 50,
+          decoration: ShapeDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            shape: CircleBorder(),
+          ),
+          child: IconButton(
+              onPressed: () async {
+                if (int.parse(page) < viewModel.movieMain.data?.totalPages) {
+                  page = (int.parse(page) + 1).toString();
+                  viewModel.fetchMovies(lang, page);
+                }
+              },
+              icon: Icon(Icons.arrow_downward),
+              color: Theme.of(context).colorScheme.secondary),
         ),
-        onTap: () {
-          _sendDataToMovieDetailScreen(context, item);
-        },
-      ),
-      elevation: context.resources.dimension.lightElevation,
+      ],
     );
   }
 
-  void _sendDataToMovieDetailScreen(BuildContext context, Results? item) {
-    Navigator.pushNamed(context, MovieDetailsScreen.id, arguments: item);
+  void _changelang(lang) {
+    if (lang == "en-US") {
+      flagUrl = "assets/images/flags/usa.png";
+    } else {
+      flagUrl = "assets/images/flags/spain.png";
+    }
+
+    viewModel.fetchMovies(lang, page);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class BaseColors{
+abstract class BaseColors {
   //theme color
   MaterialColor get colorPrimary;
   MaterialColor get colorAccent;
@@ -10,6 +10,9 @@ abstract class BaseColors{
   //chips color
   Color get catChipColor;
   Color get castChipColor;
+
+  Color get colorContainer;
+
   //extra color
   Color get colorWhite;
   Color get colorBlack;

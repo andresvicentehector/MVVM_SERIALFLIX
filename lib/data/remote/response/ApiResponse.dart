@@ -1,12 +1,11 @@
-import 'package:project/data/remote/response/Status.dart';
+import 'package:Hector_Show_movie/data/remote/response/Status.dart';
 
 class ApiResponse<T> {
-
   Status? status;
   T? data;
   String? message;
 
-  ApiResponse(this.status,this.data,this.message);
+  ApiResponse(this.status, this.data, this.message);
 
   ApiResponse.loading() : status = Status.LOADING;
 
